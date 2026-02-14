@@ -1,0 +1,88 @@
+{% extends "admin/base.html" %}
+{% block title %}Advertisements – Admin{% endblock %}
+{% block admin_content %}
+
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">Advertisement Management</h2>
+
+<!-- Add ad form -->
+<div class="card mb-3 fade-up">
+    <h3 class="card-title">Add New Ad</h3>
+    <form method="POST" action="{{ url_for('admin_add_ad') }}" enctype="multipart/form-data">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:end;flex-wrap:wrap;">
+            <div class="form-group">
+                <label>Banner Image</label>
+                <div class="file-upload-area" onclick="document.getElementById('imageInput').click()" style="padding:1.5rem;">
+                    <div>📸 Click to upload banner</div>
+                    <input type="file" id="imageInput" name="image" accept="image/*" style="display:none;" required>
+                </div>
+                <img id="imagePreview" class="file-preview" src="" alt="Preview" style="max-height:80px;margin-top:0.5rem;">
+            </div>
+            <div>
+                <div class="form-group">
+                    <label>Link URL (optional)</label>
+                    <input type="url" name="link" class="form-control" placeholder="https://example.com">
+                </div>
+                <button type="submit" class="btn btn-gold">Add Ad</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Existing ads -->
+{% if ads %}
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Banner</th>
+                <th>Link</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ad in ads %}
+            <tr>
+                <td>
+                    <img src="{{ url_for('static', filename=ad['image_path']) }}"
+                         style="width:120px;height:60px;object-fit:cover;border-radius:8px;">
+                </td>
+                <td style="max-width:200px;">
+                    {% if ad['link'] %}
+                    <a href="{{ ad['link'] }}" target="_blank" style="font-size:0.85rem;word-break:break-all;">{{ ad['link'][:40] }}{% if ad['link']|length > 40 %}...{% endif %}</a>
+                    {% else %}<span class="text-muted">No link</span>{% endif %}
+                </td>
+                <td>
+                    {% if ad['is_active'] %}
+                    <span style="background:rgba(46,204,113,0.15);color:#27ae60;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.75rem;font-weight:600;">Active</span>
+                    {% else %}
+                    <span style="background:rgba(127,127,127,0.15);color:#888;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.75rem;">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <form method="POST" action="{{ url_for('admin_toggle_ad', aid=ad['id']) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-gold">
+                                {% if ad['is_active'] %}Disable{% else %}Enable{% endif %}
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin_delete_ad', aid=ad['id']) }}"
+                              onsubmit="return confirmDelete('Delete this ad?')" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">📢</div>
+    <h3>No Ads Yet</h3>
+    <p>Add your first banner above.</p>
+</div>
+{% endif %}
+
+{% endblock %}

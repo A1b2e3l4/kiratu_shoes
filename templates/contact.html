@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Contact – Kiratu's Shoes{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you</p>
+</div>
+
+<section class="section">
+    <div class="container" style="max-width:700px;">
+        <div class="card text-center fade-up">
+            <div style="font-size:3rem;margin-bottom:1rem;">💬</div>
+            <h2 style="font-family:'Playfair Display',serif;color:var(--gold-dark);margin-bottom:1rem;">Reach Us on WhatsApp</h2>
+            <p style="max-width:450px;margin:0 auto 2rem;color:var(--text-muted);">
+                For orders, delivery inquiries, shoe availability, and any other questions — we're always available on WhatsApp.
+            </p>
+            <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="btn-whatsapp btn btn-lg" style="display:inline-flex;">
+                💬 Open WhatsApp Chat
+            </a>
+            <p style="margin-top:1.5rem;color:var(--text-muted);font-size:0.875rem;">📞 +254 107 045 642</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;">
+            <div class="card fade-up fade-up-2">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">🚚</div>
+                <strong>Delivery</strong>
+                <p class="text-muted mt-1" style="font-size:0.9rem;">Delivery arranged via WhatsApp after purchase.</p>
+            </div>
+            <div class="card fade-up fade-up-3">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">💳</div>
+                <strong>Payment</strong>
+                <p class="text-muted mt-1" style="font-size:0.9rem;">Pay via M-Pesa. Till: <strong>{{ settings['mpesa_till'] }}</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

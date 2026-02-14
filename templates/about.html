@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}About – Kiratu's Shoes{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>About Us</h1>
+    <p>Learn more about Kiratu's Shoes</p>
+</div>
+
+<section class="section">
+    <div class="container" style="max-width:700px;">
+        <div class="card fade-up">
+            <div style="font-size:3rem;text-align:center;margin-bottom:1.5rem;">👟</div>
+            <div style="font-size:1.05rem;line-height:1.9;color:var(--text);">
+                {{ settings['about_text']|safe }}
+            </div>
+            <div style="margin-top:2.5rem;text-align:center;">
+                <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="btn-whatsapp btn btn-lg">
+                    💬 Chat with Us
+                </a>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;">
+            <div class="card text-center fade-up fade-up-2">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">📍</div>
+                <strong>Location</strong>
+                <p class="text-muted mt-1">Nairobi, Kenya</p>
+            </div>
+            <div class="card text-center fade-up fade-up-3">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">💬</div>
+                <strong>WhatsApp</strong>
+                <p class="text-muted mt-1">+254 107 045 642</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

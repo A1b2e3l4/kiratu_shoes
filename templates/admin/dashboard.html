@@ -1,0 +1,74 @@
+{% extends "admin/base.html" %}
+{% block title %}Admin Dashboard – Kiratu's Shoes{% endblock %}
+{% block admin_content %}
+
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">Dashboard</h2>
+
+<!-- ── STATS ── -->
+<div class="dashboard-grid">
+    <div class="stat-card fade-up">
+        <div class="stat-icon stat-icon-gold">👟</div>
+        <div>
+            <div class="stat-value">{{ total_shoes }}</div>
+            <div class="stat-label">Total Shoes</div>
+        </div>
+    </div>
+    <div class="stat-card fade-up fade-up-2">
+        <div class="stat-icon stat-icon-green">✅</div>
+        <div>
+            <div class="stat-value" style="color:var(--success);">{{ available_shoes }}</div>
+            <div class="stat-label">Available</div>
+        </div>
+    </div>
+    <div class="stat-card fade-up fade-up-3">
+        <div class="stat-icon stat-icon-red">🏷️</div>
+        <div>
+            <div class="stat-value" style="color:var(--danger);">{{ sold_shoes }}</div>
+            <div class="stat-label">Sold</div>
+        </div>
+    </div>
+    <div class="stat-card fade-up fade-up-4">
+        <div class="stat-icon stat-icon-blue">👥</div>
+        <div>
+            <div class="stat-value" style="color:var(--info);">{{ total_users }}</div>
+            <div class="stat-label">Users</div>
+        </div>
+    </div>
+</div>
+
+<div class="stat-card mb-3" style="display:inline-flex;gap:1rem;padding:1.2rem 2rem;">
+    <div>
+        <div class="stat-label">Total Listed Value</div>
+        <div class="stat-value" style="font-size:1.5rem;color:var(--gold-dark);">KES {{ "{:,.0f}".format(total_value) }}</div>
+    </div>
+</div>
+
+<!-- ── QUICK ACTIONS ── -->
+<div class="d-flex gap-1 mb-3 flex-wrap">
+    <a href="{{ url_for('admin_add_shoe') }}" class="btn btn-gold">➕ Add Shoe</a>
+    <a href="{{ url_for('admin_shoes') }}" class="btn btn-outline-gold">👟 Manage Shoes</a>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-gold">👥 Manage Users</a>
+    <a href="{{ url_for('admin_ads') }}" class="btn btn-outline-gold">📢 Manage Ads</a>
+</div>
+
+<!-- ── ACTIVITY LOGS ── -->
+<div class="card">
+    <div class="d-flex justify-between align-center mb-2">
+        <h3 class="card-title" style="margin-bottom:0;">Recent Activity</h3>
+        <a href="{{ url_for('admin_logs') }}" class="btn btn-sm btn-outline-gold">View All</a>
+    </div>
+    {% if logs %}
+    <div class="log-list">
+        {% for log in logs %}
+        <div class="log-item">
+            <span class="log-action">{{ log.action }}</span>
+            <span class="log-time">{{ log['timestamp']|fmtdt }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No activity yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

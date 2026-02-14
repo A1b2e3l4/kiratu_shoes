@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – Kiratu's Shoes{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>Hello, {{ user['first_name'] }}! 👋</h1>
+    <p>Welcome to your Kiratu's Shoes dashboard</p>
+</div>
+
+<section class="section">
+    <div class="container">
+        <!-- Quick actions -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem;">
+            <a href="{{ url_for('home') }}" class="card text-center fade-up" style="text-decoration:none;color:var(--text);">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">👟</div>
+                <strong>Browse Shoes</strong>
+                <p class="text-muted mt-1" style="font-size:0.85rem;">See all available shoes</p>
+            </a>
+            <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="card text-center fade-up fade-up-2" style="text-decoration:none;color:var(--text);">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">💬</div>
+                <strong>WhatsApp Support</strong>
+                <p class="text-muted mt-1" style="font-size:0.85rem;">Chat with us</p>
+            </a>
+            <a href="{{ url_for('edit_profile') }}" class="card text-center fade-up fade-up-3" style="text-decoration:none;color:var(--text);">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">✏️</div>
+                <strong>Edit Profile</strong>
+                <p class="text-muted mt-1" style="font-size:0.85rem;">Update your details</p>
+            </a>
+            <a href="{{ url_for('change_password') }}" class="card text-center fade-up fade-up-4" style="text-decoration:none;color:var(--text);">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">🔐</div>
+                <strong>Change Password</strong>
+                <p class="text-muted mt-1" style="font-size:0.85rem;">Update security</p>
+            </a>
+        </div>
+
+        <!-- Recently added shoes -->
+        {% if recent_shoes %}
+        <h2 class="section-title mb-3">New Arrivals</h2>
+        <div class="shoes-grid">
+            {% for shoe in recent_shoes %}
+            <div class="shoe-card fade-up">
+                <div class="shoe-img-wrap">
+                    <img src="{{ url_for('static', filename=shoe.image_path) }}" alt="Shoe size {{ shoe['size'] }}">
+                    {% if is_new_shoe(shoe['created_at']) %}
+                    <span class="badge badge-new">New</span>
+                    {% endif %}
+                </div>
+                <div class="shoe-card-body">
+                    <div class="shoe-size">Size {{ shoe['size'] }}</div>
+                    <div class="shoe-price">KES {{ "{:,.0f}".format(shoe["price"]) }}</div>
+                    <div class="shoe-card-actions">
+                        <a href="{{ url_for('shoe_detail', shoe_id=shoe['id']) }}" class="btn btn-outline-gold btn-sm">View</a>
+                        <a href="https://wa.me/254107045642?text=Hello%2C+I+want+to+order+this+shoe%3A%0ASize%3A+{{ shoe['size'] }}%0APrice%3A+KES+{{ shoe["price"]|int }}"
+                           target="_blank" class="btn btn-sm" style="background:#25D366;color:white;">💬 Order</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

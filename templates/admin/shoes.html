@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+{% block title %}Shoe Management – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="d-flex justify-between align-center mb-3 flex-wrap gap-1">
+    <h2 style="font-family:'Playfair Display',serif;">Shoe Management</h2>
+    <a href="{{ url_for('admin_add_shoe') }}" class="btn btn-gold">➕ Add New Shoe</a>
+</div>
+
+{% if shoes %}
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Size</th>
+                <th>Price (KES)</th>
+                <th>Status</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shoe in shoes %}
+            <tr>
+                <td>
+                    <img src="{{ url_for('static', filename=shoe.image_path) }}" 
+                         style="width:60px;height:50px;object-fit:cover;border-radius:8px;">
+                </td>
+                <td><strong>{{ shoe['size'] }}</strong></td>
+                <td>{{ "{:,.0f}".format(shoe['price']) }}</td>
+                <td>
+                    {% if shoe['is_available'] %}
+                    <span style="background:rgba(46,204,113,0.15);color:#27ae60;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.75rem;font-weight:600;">Available</span>
+                    {% else %}
+                    <span style="background:rgba(231,76,60,0.15);color:#e74c3c;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.75rem;font-weight:600;">Sold</span>
+                    {% endif %}
+                </td>
+                <td style="color:var(--text-muted);font-size:0.85rem;">{{ shoe['created_at']|fmtd }}</td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <form method="POST" action="{{ url_for('admin_toggle_shoe', sid=shoe['id']) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm {% if shoe['is_available'] %}btn-outline-gold{% else %}btn-success{% endif %}">
+                                {% if shoe['is_available'] %}Mark Sold{% else %}Mark Available{% endif %}
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin_delete_shoe', sid=shoe['id']) }}" 
+                              onsubmit="return confirmDelete('Delete this shoe permanently?')">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">👟</div>
+    <h3>No Shoes Added Yet</h3>
+    <p>Start by adding your first shoe.</p>
+    <a href="{{ url_for('admin_add_shoe') }}" class="btn btn-gold mt-2">Add First Shoe</a>
+</div>
+{% endif %}
+
+{% endblock %}

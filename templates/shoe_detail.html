@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Shoe – Size {{ shoe['size'] }} | Kiratu's Shoes{% endblock %}
+{% block content %}
+
+<div class="shoe-detail-wrap">
+    <!-- Image -->
+    <div class="shoe-detail-img fade-up">
+        <img src="{{ url_for('static', filename=shoe.image_path) }}" alt="Shoe size {{ shoe['size'] }}">
+        {% if is_new_shoe(shoe['created_at']) and shoe['is_available'] %}
+        <span class="badge badge-new" style="position:absolute;top:1rem;left:1rem;">New</span>
+        {% endif %}
+        {% if not shoe['is_available'] %}
+        <span class="badge badge-sold" style="position:absolute;top:1rem;left:1rem;">Sold</span>
+        {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="shoe-detail-info fade-up fade-up-2">
+        <div>
+            <div class="shoe-detail-size">Size {{ shoe['size'] }}</div>
+            <div class="shoe-detail-price">KES {{ "{:,.0f}".format(shoe["price"]) }}</div>
+            <p class="text-muted">Mutumba shoe – locally sourced, quality checked.</p>
+        </div>
+
+        {% if shoe['is_available'] %}
+        <!-- WhatsApp Order -->
+        <a href="https://wa.me/254107045642?text=Hello%2C+I+want+to+order+this+shoe%3A%0ASize%3A+{{ shoe['size'] }}%0APrice%3A+KES+{{ shoe["price"]|int }}"
+           target="_blank" class="btn-whatsapp btn btn-lg">
+            💬 Order via WhatsApp
+        </a>
+
+        <!-- MPesa Instructions -->
+        <div class="mpesa-box">
+            <h4>📱 Pay via M-Pesa</h4>
+            <ol>
+                <li>Open <strong>M-Pesa Menu</strong></li>
+                <li>Go to <strong>Lipa na M-Pesa</strong></li>
+                <li>Select <strong>Buy Goods and Services</strong></li>
+                <li>Enter Pochi La Biashara: <span class="mpesa-till">{{ settings['mpesa_till'] }}</span></li>
+                <li>Enter Amount: <strong>KES {{ "{:,.0f}".format(shoe["price"]) }}</strong></li>
+                <li>Confirm with your PIN</li>
+            </ol>
+            <p class="text-muted mt-1" style="font-size:0.85rem;">After payment, send confirmation via WhatsApp 👇</p>
+            <a href="https://wa.me/254107045642?text=Hi!+I+have+paid+for+the+shoe+Size+{{ shoe['size'] }}+via+MPesa.+Please+confirm."
+               target="_blank" class="btn btn-sm" style="background:#25D366;color:white;margin-top:0.75rem;display:inline-block;">
+                💬 Send Confirmation
+            </a>
+        </div>
+        {% else %}
+        <div style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:var(--radius);padding:1.5rem;text-align:center;">
+            <div style="font-size:2rem;margin-bottom:0.5rem;">😔</div>
+            <strong>This shoe is sold out.</strong>
+            <p class="text-muted" style="margin-top:0.5rem;font-size:0.9rem;">Contact us on WhatsApp to inquire about similar shoes.</p>
+            <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="btn-whatsapp btn mt-2">💬 Inquire on WhatsApp</a>
+        </div>
+        {% endif %}
+
+        <div style="font-size:0.8rem;color:var(--text-muted);">
+            Added: {{ shoe['created_at']|fmtd }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Home – Kiratu's Shoes{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="hero-inner fade-up">
+        <div class="hero-eyebrow">✨ Fresh Mutumba Drops</div>
+        <h1>Quality Shoes<br><span>at Your Price</span></h1>
+        <p>Discover curated mutumba shoes collected locally. Great quality, unbeatable prices.</p>
+        <div class="hero-actions">
+            <a href="#shoes" class="btn btn-gold btn-lg">Browse Shoes</a>
+            <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="btn-whatsapp btn">
+                💬 WhatsApp Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── ADS BANNER ── -->
+{% if active_ads %}
+<div class="ads-banner has-ads" style="padding-top:2rem;">
+    {% for ad in active_ads %}
+    <div class="ad-item">
+        {% if ad.link %}
+        <a href="{{ ad.link }}" target="_blank" rel="noopener">
+            <img src="{{ url_for('static', filename=ad.image_path) }}" alt="Advertisement">
+        </a>
+        {% else %}
+        <img src="{{ url_for('static', filename=ad.image_path) }}" alt="Advertisement">
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ── RECENTLY ADDED ── -->
+{% if recent_shoes %}
+<section class="section" style="padding-bottom:0;">
+    <div class="container">
+        <div class="d-flex justify-between align-center mb-3 flex-wrap gap-1">
+            <h2 class="section-title">Recently Added</h2>
+            <a href="#shoes" class="btn btn-outline-gold btn-sm">View All</a>
+        </div>
+        <div class="shoes-grid">
+            {% for shoe in recent_shoes[:4] %}
+            <div class="shoe-card fade-up" style="animation-delay:{{ loop.index0 * 0.1 }}s">
+                <div class="shoe-img-wrap">
+                    <img src="{{ url_for('static', filename=shoe.image_path) }}" alt="Shoe size {{ shoe['size'] }}">
+                    {% if is_new_shoe(shoe['created_at']) %}
+                    <span class="badge badge-new">New</span>
+                    {% endif %}
+                    {% if not shoe['is_available'] %}
+                    <span class="badge badge-sold" style="left:auto;right:0.75rem;">Sold</span>
+                    {% endif %}
+                </div>
+                <div class="shoe-card-body">
+                    <div class="shoe-size">Size {{ shoe['size'] }}</div>
+                    <div class="shoe-price">KES {{ "{:,.0f}".format(shoe["price"]) }}</div>
+                    <div class="shoe-card-actions">
+                        <a href="{{ url_for('shoe_detail', shoe_id=shoe['id']) }}" class="btn btn-outline-gold btn-sm">View</a>
+                        {% if shoe['is_available'] %}
+                        <a href="{{ settings['whatsapp_link'] }}?text={{ ('Hello, I want to order this shoe:%0ASize: ' + shoe['size'] + '%0APrice: KES ' + shoe["price"]|int|string)|urlencode }}" 
+                           target="_blank" class="btn btn-sm" style="background:#25D366;color:white;">💬 Order</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ── ALL SHOES ── -->
+<section class="section" id="shoes">
+    <div class="container">
+        <h2 class="section-title mb-3">All Shoes</h2>
+        {% if shoes %}
+        <div class="shoes-grid">
+            {% for shoe in shoes %}
+            <div class="shoe-card {% if not shoe['is_available'] %}sold{% endif %} fade-up" style="animation-delay:{{ loop.index0 * 0.07 }}s">
+                <div class="shoe-img-wrap">
+                    <img src="{{ url_for('static', filename=shoe.image_path) }}" alt="Shoe size {{ shoe['size'] }}">
+                    {% if is_new_shoe(shoe['created_at']) and shoe['is_available'] %}
+                    <span class="badge badge-new">New</span>
+                    {% endif %}
+                    {% if not shoe['is_available'] %}
+                    <span class="badge badge-sold">Sold</span>
+                    {% endif %}
+                </div>
+                <div class="shoe-card-body">
+                    <div class="shoe-size">Size {{ shoe['size'] }}</div>
+                    <div class="shoe-price">KES {{ "{:,.0f}".format(shoe["price"]) }}</div>
+                    <div class="shoe-card-actions">
+                        <a href="{{ url_for('shoe_detail', shoe_id=shoe['id']) }}" class="btn btn-outline-gold btn-sm">Details</a>
+                        {% if shoe['is_available'] %}
+                        <a href="https://wa.me/254107045642?text=Hello%2C+I+want+to+order+this+shoe%3A%0ASize%3A+{{ shoe['size'] }}%0APrice%3A+KES+{{ shoe["price"]|int }}"
+                           target="_blank" class="btn btn-sm" style="background:#25D366;color:white;">💬 Order</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">👟</div>
+            <h3>No Shoes Listed Yet</h3>
+            <p>Check back soon — new stock drops regularly!</p>
+            <a href="{{ settings['whatsapp_link'] }}" target="_blank" class="btn-whatsapp btn mt-2">
+                💬 Ask About Stock
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ── WHY US ── -->
+<section class="section" style="background:var(--dark);padding:5rem 1.5rem;">
+    <div class="container text-center">
+        <h2 style="color:var(--gold);margin-bottom:3rem;">Why Kiratu's Shoes?</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2rem;">
+            <div class="fade-up fade-up-1">
+                <div style="font-size:2.5rem;margin-bottom:1rem;">💰</div>
+                <h3 style="color:white;font-size:1.1rem;">Affordable Prices</h3>
+                <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:0.5rem;">Best mutumba prices in the market</p>
+            </div>
+            <div class="fade-up fade-up-2">
+                <div style="font-size:2.5rem;margin-bottom:1rem;">✅</div>
+                <h3 style="color:white;font-size:1.1rem;">Quality Verified</h3>
+                <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:0.5rem;">Every pair checked before listing</p>
+            </div>
+            <div class="fade-up fade-up-3">
+                <div style="font-size:2.5rem;margin-bottom:1rem;">🚀</div>
+                <h3 style="color:white;font-size:1.1rem;">Fast Delivery</h3>
+                <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:0.5rem;">Delivery arranged via WhatsApp</p>
+            </div>
+            <div class="fade-up fade-up-4">
+                <div style="font-size:2.5rem;margin-bottom:1rem;">📱</div>
+                <h3 style="color:white;font-size:1.1rem;">Easy Payment</h3>
+                <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:0.5rem;">Pay via M-Pesa, simple & secure</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

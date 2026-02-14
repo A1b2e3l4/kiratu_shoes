@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <!-- ── SIDEBAR ── -->
+    <aside class="admin-sidebar">
+        <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;">Admin Panel</div>
+            <div style="font-size:0.9rem;color:var(--gold);font-weight:600;margin-top:0.25rem;">{{ current_user['first_name'] ~ ' ' ~ current_user['last_name'] }}</div>
+        </div>
+        <div class="sidebar-title">Overview</div>
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">📊 Dashboard</a>
+        <a href="{{ url_for('admin_logs') }}" class="sidebar-link {% if request.endpoint == 'admin_logs' %}active{% endif %}">📋 Activity Logs</a>
+        <div class="sidebar-title">Inventory</div>
+        <a href="{{ url_for('admin_shoes') }}" class="sidebar-link {% if request.endpoint in ['admin_shoes','admin_add_shoe'] %}active{% endif %}">👟 Shoe Management</a>
+        <div class="sidebar-title">Marketing</div>
+        <a href="{{ url_for('admin_ads') }}" class="sidebar-link {% if request.endpoint == 'admin_ads' %}active{% endif %}">📢 Advertisements</a>
+        <div class="sidebar-title">People</div>
+        <a href="{{ url_for('admin_users') }}" class="sidebar-link {% if request.endpoint in ['admin_users','admin_user_detail'] %}active{% endif %}">👥 Users</a>
+        <div class="sidebar-title">Config</div>
+        <a href="{{ url_for('admin_settings') }}" class="sidebar-link {% if request.endpoint == 'admin_settings' %}active{% endif %}">⚙️ Settings</a>
+        <div class="sidebar-title" style="margin-top:2rem;"></div>
+        <a href="{{ url_for('home') }}" class="sidebar-link">🌐 View Site</a>
+        <a href="{{ url_for('logout') }}" class="sidebar-link" style="color:rgba(231,76,60,0.8);">🚪 Logout</a>
+        <a href="{{ url_for('admin_stk_page') }}" class="sidebar-link">📲 STK Push</a>
+
+    </aside>
+    <!-- ── MAIN ── -->
+    <div class="admin-content">
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

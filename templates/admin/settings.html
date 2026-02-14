@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block title %}Settings – Admin{% endblock %}
+{% block admin_content %}
+
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">Business Settings</h2>
+
+<div style="max-width:600px;">
+    <div class="card fade-up">
+        <form method="POST">
+            <div class="form-group">
+                <label for="mpesa_till">M-Pesa Pochi la Biashara</label>
+                <input type="text" id="mpesa_till" name="mpesa_till" class="form-control"
+                       value="{{ settings['mpesa_till'] }}" placeholder="e.g. 1234567">
+            </div>
+            <div class="form-group">
+                <label for="whatsapp_link">WhatsApp Link</label>
+                <input type="url" id="whatsapp_link" name="whatsapp_link" class="form-control"
+                       value="{{ settings['whatsapp_link'] }}" placeholder="https://wa.me/254...">
+            </div>
+            <div class="form-group">
+                <label for="about_text">About Page Content</label>
+                <textarea id="about_text" name="about_text" class="form-control" rows="5"
+                          style="resize:vertical;">{{ settings['about_text'] }}</textarea>
+            </div>
+            <div class="form-group">
+                <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;">
+                    <input type="checkbox" name="show_sold_shoes" {% if settings['show_sold_shoes'] %}checked{% endif %} style="width:16px;height:16px;">
+                    Show sold shoes on public pages
+                </label>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="primary_color">Primary Color</label>
+                    <input type="color" id="primary_color" name="primary_color"
+                           value="{{ settings['primary_color'] }}" class="form-control" style="height:48px;padding:4px;">
+                </div>
+                <div class="form-group">
+                    <label for="accent_color">Accent Color</label>
+                    <input type="color" id="accent_color" name="accent_color"
+                           value="{{ settings['accent_color'] }}" class="form-control" style="height:48px;padding:4px;">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-gold">Save Settings</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

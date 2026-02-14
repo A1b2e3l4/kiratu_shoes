@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+{% block title %}User Detail – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="breadcrumb">
+    <a href="{{ url_for('admin_users') }}">Users</a> / {{ user['first_name'] ~ ' ' ~ user['last_name'] }}
+</div>
+
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">User Detail</h2>
+
+<div style="max-width:600px;">
+    <div class="card fade-up">
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;">
+            <div style="width:64px;height:64px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:var(--dark);flex-shrink:0;">
+                {{ user['first_name'][0] }}{{ user['last_name'][0] }}
+            </div>
+            <div>
+                <h3 style="font-family:'Playfair Display',serif;">{{ user['first_name'] ~ ' ' ~ user['last_name'] }}</h3>
+                <p class="text-muted">{{ user['email'] }}</p>
+                {% if user['is_admin'] %}<span style="background:var(--gold);color:var(--dark);padding:0.2rem 0.7rem;border-radius:50px;font-size:0.75rem;font-weight:700;">Admin</span>{% endif %}
+            </div>
+        </div>
+
+        <table style="width:100%;border-collapse:collapse;background:none;box-shadow:none;margin-bottom:1.5rem;">
+            <tr>
+                <td style="padding:0.5rem 0;color:var(--text-muted);font-size:0.875rem;width:40%;border-bottom:1px solid var(--cream-dark);">Email Verified</td>
+                <td style="padding:0.5rem 0;border-bottom:1px solid var(--cream-dark);">{% if user['is_verified'] %}✅ Yes{% else %}❌ No{% endif %}</td>
+            </tr>
+            <tr>
+                <td style="padding:0.5rem 0;color:var(--text-muted);font-size:0.875rem;border-bottom:1px solid var(--cream-dark);">Joined</td>
+                <td style="padding:0.5rem 0;border-bottom:1px solid var(--cream-dark);">{{ user['created_at']|fmtdt }}</td>
+            </tr>
+            <tr>
+                <td style="padding:0.5rem 0;color:var(--text-muted);font-size:0.875rem;">Role</td>
+                <td style="padding:0.5rem 0;">{% if user['is_admin'] %}Administrator{% else %}Customer{% endif %}</td>
+            </tr>
+        </table>
+
+        <div class="d-flex gap-1 flex-wrap">
+            {% if not user['is_admin'] %}
+            <form method="POST" action="{{ url_for('admin_promote_user', uid=user['id']) }}" style="display:inline;">
+                <button type="submit" class="btn btn-dark btn-sm">⬆️ Make Admin</button>
+            </form>
+            {% elif user['email'] != 'kiratushoes@gmail.com' %}
+            <form method="POST" action="{{ url_for('admin_demote_user', uid=user['id']) }}" style="display:inline;">
+                <button type="submit" class="btn btn-outline-gold btn-sm">⬇️ Remove Admin</button>
+            </form>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('admin_reset_user_password', uid=user['id']) }}"
+                  onsubmit="return confirmDelete('Send a password reset email to this user?')">
+                <button type="submit" class="btn btn-outline-gold btn-sm">🔑 Reset Password</button>
+            </form>
+
+            {% if user['email'] != 'kiratushoes@gmail.com' %}
+            <form method="POST" action="{{ url_for('admin_delete_user', uid=user['id']) }}"
+                  onsubmit="return confirmDelete('Delete this user permanently?')">
+                <button type="submit" class="btn btn-danger btn-sm">🗑️ Delete User</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

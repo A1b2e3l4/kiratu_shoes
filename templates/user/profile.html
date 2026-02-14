@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Profile – Kiratu's Shoes{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>My Profile</h1>
+    <p>Your account information</p>
+</div>
+<section class="section">
+    <div class="container" style="max-width:600px;">
+        <div class="card fade-up">
+            <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;">
+                <div style="width:72px;height:72px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--dark);font-weight:700;flex-shrink:0;">
+                    {{ user['first_name'][0] }}{{ user['last_name'][0] }}
+                </div>
+                <div>
+                    <h2 style="font-family:'Playfair Display',serif;margin-bottom:0.25rem;">{{ user['first_name'] ~ ' ' ~ user['last_name'] }}</h2>
+                    <p class="text-muted">{{ user['email'] }}</p>
+                    {% if user['is_admin'] %}<span style="background:var(--gold);color:var(--dark);padding:0.2rem 0.7rem;border-radius:50px;font-size:0.75rem;font-weight:700;">Admin</span>{% endif %}
+                </div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;background:none;box-shadow:none;">
+                <tr>
+                    <td style="padding:0.6rem 0;color:var(--text-muted);font-size:0.875rem;width:40%;border-bottom:1px solid var(--cream-dark);">First Name</td>
+                    <td style="padding:0.6rem 0;font-weight:500;border-bottom:1px solid var(--cream-dark);">{{ user['first_name'] }}</td>
+                </tr>
+                <tr>
+                    <td style="padding:0.6rem 0;color:var(--text-muted);font-size:0.875rem;border-bottom:1px solid var(--cream-dark);">Last Name</td>
+                    <td style="padding:0.6rem 0;font-weight:500;border-bottom:1px solid var(--cream-dark);">{{ user['last_name'] }}</td>
+                </tr>
+                <tr>
+                    <td style="padding:0.6rem 0;color:var(--text-muted);font-size:0.875rem;border-bottom:1px solid var(--cream-dark);">Email</td>
+                    <td style="padding:0.6rem 0;font-weight:500;border-bottom:1px solid var(--cream-dark);">{{ user['email'] }}</td>
+                </tr>
+                <tr>
+                    <td style="padding:0.6rem 0;color:var(--text-muted);font-size:0.875rem;">Member Since</td>
+                    <td style="padding:0.6rem 0;font-weight:500;">{{ user['created_at']|fmtd }}</td>
+                </tr>
+            </table>
+            <div class="d-flex gap-1 mt-3 flex-wrap">
+                <a href="{{ url_for('edit_profile') }}" class="btn btn-gold">✏️ Edit Profile</a>
+                <a href="{{ url_for('change_password') }}" class="btn btn-outline-gold">🔑 Change Password</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

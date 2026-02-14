@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}Add Shoe – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="breadcrumb">
+    <a href="{{ url_for('admin_shoes') }}">Shoes</a> / Add New Shoe
+</div>
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">Add New Shoe</h2>
+
+<div style="max-width:500px;">
+    <div class="card fade-up">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Shoe Photo</label>
+                <div class="file-upload-area" onclick="document.getElementById('imageInput').click()">
+                    <div style="font-size:2.5rem;margin-bottom:0.5rem;">📸</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Click to upload or drag & drop</p>
+                    <p style="color:var(--text-muted);font-size:0.8rem;">JPG, PNG, WEBP (Max 5MB)</p>
+                    <input type="file" id="imageInput" name="image" accept="image/*" style="display:none;" required>
+                </div>
+                <img id="imagePreview" class="file-preview" src="" alt="Preview">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="size">Shoe Size</label>
+                    <input type="text" id="size" name="size" class="form-control" placeholder="e.g. 42, 8, 10.5" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price (KES)</label>
+                    <input type="number" id="price" name="price" class="form-control" placeholder="e.g. 1500" min="1" required>
+                </div>
+            </div>
+            <div class="d-flex gap-1">
+                <button type="submit" class="btn btn-gold">Add Shoe</button>
+                <a href="{{ url_for('admin_shoes') }}" class="btn btn-outline-gold">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

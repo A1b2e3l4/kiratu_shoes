@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}Shoe Management – Admin{% endblock %}
+{% block admin_content %}
+<div class="card fade-up" style="max-width:600px;">
+    <h3 class="card-title">📲 Send M-Pesa STK Push</h3>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">
+        Send payment prompt directly to customer phone.
+    </p>
+
+    <form method="POST" action="{{ url_for('admin_send_stk') }}">
+        
+        <!-- Customer Phone -->
+        <div class="form-group">
+            <label for="phone">Customer Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control"
+                   placeholder="2547XXXXXXXX" required>
+            <small style="color:var(--text-muted);">Format: 2547XXXXXXXX</small>
+        </div>
+
+        <!-- Amount -->
+        <div class="form-group">
+            <label for="amount">Amount (KES)</label>
+            <input type="number" id="amount" name="amount" class="form-control"
+                   placeholder="e.g. 1500" min="1" required>
+        </div>
+
+        <!-- Reference -->
+        <div class="form-group">
+            <label for="reference">Payment Reference</label>
+            <input type="text" id="reference" name="reference" class="form-control"
+                   placeholder="Order #123 or Shoe Size 42">
+        </div>
+
+        <!-- Note -->
+        <div class="form-group">
+            <label for="note">Note (optional)</label>
+            <textarea id="note" name="note" class="form-control" rows="2"
+                      placeholder="Additional details"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-gold">🚀 Send STK Push</button>
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}

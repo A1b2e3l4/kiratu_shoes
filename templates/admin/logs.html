@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% block title %}Activity Logs – Admin{% endblock %}
+{% block admin_content %}
+
+<h2 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;">Activity Logs</h2>
+
+{% if logs %}
+<div class="log-list">
+    {% for log in logs %}
+    <div class="log-item fade-up">
+        <div>
+            <span class="log-action">{{ log['action'] }}</span>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">
+                by {{ log['first_name'] ~ ' ' ~ log['last_name'] }}
+            </div>
+        </div>
+        <span class="log-time">{{ log['timestamp']|fmtdt }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">📋</div>
+    <h3>No Activity Logged</h3>
+    <p>Admin actions will appear here.</p>
+</div>
+{% endif %}
+
+{% endblock %}

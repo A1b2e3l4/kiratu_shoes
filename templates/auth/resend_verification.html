@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Resend Verification – Kiratu's Shoes{% endblock %}
+{% block content %}
+<div class="form-container" style="padding-top:4rem;padding-bottom:4rem;">
+    <div class="form-card fade-up text-center">
+        <div style="font-size:3rem;margin-bottom:1rem;">🔄</div>
+        <div class="form-title">Resend Code</div>
+        <div class="form-subtitle">Enter your email to get a new verification code</div>
+        <form method="POST" style="text-align:left;">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required>
+            </div>
+            <button type="submit" class="btn btn-gold btn-block">Send New Code</button>
+        </form>
+        <p class="text-center mt-3 text-muted">
+            <a href="{{ url_for('login') }}">← Back to login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
